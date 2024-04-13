@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class homework33 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+
+
         int m = sc.nextInt();//输入m行
         int n = sc.nextInt();//输入n列
         int[][] island = new int[m][n];//定义一个m行n列的二维数据，来填充数字编号
