@@ -1,6 +1,8 @@
 package homework4;
 import java.util.ArrayList;
 import java.util.List;
+
+import homework4.CourseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -303,7 +305,7 @@ class Student {
     private String email;
     private String name;
     private CourseManager courseManager;
-    private int credits;//这个是学生的初始积分
+    private int credits;
     private ArrayList<Course> enrollCourses;
     private ArrayList<Course> successCourses;
 
@@ -311,7 +313,7 @@ class Student {
         this.studentID = studentID;
         this.email = email;
         this.name = name;
-        this.courseManager = null;//看不懂这句话
+        this.courseManager = null;
         this.credits = credits;
         this.enrollCourses = new ArrayList<>();
         this.successCourses = new ArrayList<>();

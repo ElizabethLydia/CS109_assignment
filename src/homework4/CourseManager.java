@@ -164,13 +164,16 @@ public class CourseManager {
             //1.积分退回，学生积分更新
             //2.学生选课列表去除这门课
             //3.课程的学生列表里面去除这个学生，课程的积分列表中去除这个学生对应的积分
-            //1.积分退回，学生积分更新
-            student.setCredits(student.getCredits() + student.getEnrollCourses().indexOf(course));
+            //1.积分退回，学生积分更新(course.getCredits().get(student.getEnrollCourses().indexOf(course))这个是学生选的这门课的积分)
+            student.setCredits(student.getCredits() + course.getCredits().get(student.getEnrollCourses().indexOf(course)));
             //2.学生选课列表去除这门课
             student.getEnrollCourses().remove(course);
             //3.课程的学生列表中去除这个学生，课程的积分列表中去除这个学生对应的积分
+            course.getCredits().remove(course.getEnrollStudent().indexOf(student));
             course.getEnrollStudent().remove(student);
-            course.getCredits().remove(getStudents().indexOf(student));
+//            course.getEnrollStudent().remove(student);
+//            //注意这里已经把同学移除了，所以这里的course.getCredits().get(course.getEnrollStudent().indexOf(student))是找不到的
+//            course.getCredits().remove(course.getEnrollStudent().indexOf(student));
             return true;
         }
     }
@@ -202,9 +205,9 @@ public class CourseManager {
                     int temp = inputCredits.get(i);
                     inputCredits.set(i, inputCredits.get(j));
                     inputCredits.set(j, temp);
-                }//二.1:不出现同分溢出的情况,即在满足选入课程的最后一人他不会和后面的同分，
-                // 即使他与前面的同分，但是与后面不同分，他也可以正好选进去
-                if (inputCredits.get(course.getMaxCapacity()) != inputCredits.get(course.getMaxCapacity() + 1)) {
+                }
+                //二.1:不出现同分溢出的情况,即在满足选入课程的最后一人他不会和后面的同分，即使他与前面的同分，但是与后面不同分，他也可以正好选进去
+                if (inputCredits.get(course.getMaxCapacity()) != course.getCredits().indexOf(course.getMaxCapacity()+1) ) {
                     for (int i = 0; i < course.getMaxCapacity(); i++) {
                         //此时应该在从大到小的积分表inputCredits中从大的开始遍历，找到对应积分对应的学生，
                         //在这个学生的成功选课列表中把这个课程加到成功选课列表中
@@ -221,7 +224,7 @@ public class CourseManager {
                     }
                 }
                 //二.2.出现同分溢出的情况，即满足选入课程的最后一人他会和后面的同分
-                if (inputCredits.get(course.getMaxCapacity()) == inputCredits.get(course.getMaxCapacity() + 1)) {
+                if (inputCredits.get(course.getMaxCapacity()) == course.getCredits().indexOf(course.getMaxCapacity()+1)) {
                     for (int i = 0; i < course.getMaxCapacity(); i++) {
                         int maxSatisfy = 0;//这个用来标记不会出现同分溢出的那个人
                         //此时应该在从大到小的积分表inputCredits中从大的开始遍历，找到对应积分对应的学生，
