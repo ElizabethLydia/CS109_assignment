@@ -128,7 +128,7 @@ public class CourseManager {
             //2.更新学生的这个课程的投分情况，变为此时的所投积分
             //3.更新课程的积分情况，变为此时的所投积分
             //1.更新学生目前的剩余积分
-            student.setCredits(credits);
+            student.setCredits(student.getCredits() + course.getCredits().get(student.getEnrollCourses().indexOf(course)) - credits);
             //2.更新学生的这个课程的投分情况，变为此时的所投积分
             student.enrollCourse(course.getCourseID(), credits);
             //3.更新课程的积分情况，变为此时的所投积分
@@ -199,12 +199,19 @@ public class CourseManager {
             }
             //二.课程容量小于选课学生数
             if (course.getMaxCapacity() < course.getEnrollStudent().size()) {
-                ArrayList<Integer> inputCredits = course.getCredits();
+                ArrayList<Integer> inputCredits = new ArrayList<Integer>(course.getEnrollStudent().size());
+                for (int i = 0; i < course.getEnrollStudent().size(); i++) {
+                    inputCredits.add(course.getCredits().get(i));
+                }
                 //对这个数组进行从大到小的排序
-                for (int i = 0, j = inputCredits.size() - 1; i < j; i++, j--) {
-                    int temp = inputCredits.get(i);
-                    inputCredits.set(i, inputCredits.get(j));
-                    inputCredits.set(j, temp);
+                for (int i = 0; i < inputCredits.size(); i++) {
+                    for (int j = 0; j < inputCredits.size() - i - 1; j++) {
+                        if (inputCredits.get(j) < inputCredits.get(j + 1)) {
+                            int temp = inputCredits.get(j);
+                            inputCredits.set(j, inputCredits.get(j + 1));
+                            inputCredits.set(j + 1, temp);
+                        }
+                    }
                 }
                 //二.1:不出现同分溢出的情况,即在满足选入课程的最后一人他不会和后面的同分，即使他与前面的同分，但是与后面不同分，他也可以正好选进去
                 if (inputCredits.get(course.getMaxCapacity()) != course.getCredits().indexOf(course.getMaxCapacity()+1) ) {
