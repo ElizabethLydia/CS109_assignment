@@ -140,47 +140,71 @@ public class CourseManager {
     }
 
 
-    //退课
     public boolean dropStudentEnrollmentCourse(Student student, String courseId) {
-        //1.选课阶段
-        //2.课程存在
-        //3.学生选过这门课
         if (!ifOpen) {
             return false;
-        } else {//2.course存在
-            Course course = null;
-            for (Course c : courses) {
-                if (c.getCourseID().equals(courseId)) {
-                    course = c;
-                    break;
-                }
-            }
-            if (course == null) {
-                return false;
-            }
-            //3.学生选过这门课
-            if (!student.getEnrollCourses().contains(course)) {
-                return false;
-            }
-            //满足了退课的前提条件，成功退课之后
-            //1.积分退回，学生积分更新
-            //2.学生选课列表去除这门课
-            //3.课程的学生列表里面去除这个学生，课程的积分列表中去除这个学生对应的积分
-            //1.积分退回，学生积分更新
-            // (course.getCredits().get(student.getEnrollCourses().indexOf(course))和course.getEnrollStudent().indexOf(student)是不一样的
-            //学生中找到该课程的索引不一定是我要的这门课程投分学生的索引
-            student.setCredits(student.getCredits() + course.getCredits().get(course.getEnrollStudent().indexOf(student)));
-            //2.学生选课列表去除这门课
-            student.getEnrollCourses().remove(course);
-            //3.课程的学生列表中去除这个学生，课程的积分列表中去除这个学生对应的积分
-            course.getCredits().remove(course.getEnrollStudent().indexOf(student));
-            course.getEnrollStudent().remove(student);
-//            course.getEnrollStudent().remove(student);
-//            //注意这里已经把同学移除了，所以这里的course.getCredits().get(course.getEnrollStudent().indexOf(student))是找不到的
-//            course.getCredits().remove(course.getEnrollStudent().indexOf(student));
-            return true;
         }
+        Course course = null;
+        for (Course c : courses) {
+            if (c.getCourseID().equals(courseId)) {
+                course = c;
+                break;
+            }
+        }
+        if (course == null) {
+            return false;
+        }
+        if (!student.getEnrollCourses().contains(course)) {
+            return false;
+        }
+        int studentIndexInCourse = course.getEnrollStudent().indexOf(student);
+        student.setCredits(student.getCredits() + course.getCredits().get(studentIndexInCourse));
+        student.getEnrollCourses().remove(course);
+        course.getEnrollStudent().remove(studentIndexInCourse); // 修正索引
+        course.getCredits().remove(studentIndexInCourse); // 修正索引
+        return true;
     }
+    //退课
+//    public boolean dropStudentEnrollmentCourse(Student student, String courseId) {
+//        //1.选课阶段
+//        //2.课程存在
+//        //3.学生选过这门课
+//        if (!ifOpen) {
+//            return false;
+//        } else {//2.course存在
+//            Course course = null;
+//            for (Course c : courses) {
+//                if (c.getCourseID().equals(courseId)) {
+//                    course = c;
+//                    break;
+//                }
+//            }
+//            if (course == null) {
+//                return false;
+//            }
+//            //3.学生选过这门课
+//            if (!student.getEnrollCourses().contains(course)) {
+//                return false;
+//            }
+//            //满足了退课的前提条件，成功退课之后
+//            //1.积分退回，学生积分更新
+//            //2.学生选课列表去除这门课
+//            //3.课程的学生列表里面去除这个学生，课程的积分列表中去除这个学生对应的积分
+//            //1.积分退回，学生积分更新
+//            // (course.getCredits().get(student.getEnrollCourses().indexOf(course))和course.getEnrollStudent().indexOf(student)是不一样的
+//            //学生中找到该课程的索引不一定是我要的这门课程投分学生的索引
+//            student.setCredits(student.getCredits() + course.getCredits().get(course.getEnrollStudent().indexOf(student)));
+//            //2.学生选课列表去除这门课
+//            student.getEnrollCourses().remove(course);
+//            //3.课程的学生列表中去除这个学生，课程的积分列表中去除这个学生对应的积分
+//            course.getCredits().remove(course.getEnrollStudent().indexOf(student));
+//            course.getEnrollStudent().remove(student);
+////            course.getEnrollStudent().remove(student);
+////            //注意这里已经把同学移除了，所以这里的course.getCredits().get(course.getEnrollStudent().indexOf(student))是找不到的
+////            course.getCredits().remove(course.getEnrollStudent().indexOf(student));
+//            return true;
+//        }
+//    }
 
 
     public void finalizeEnrollments() {
