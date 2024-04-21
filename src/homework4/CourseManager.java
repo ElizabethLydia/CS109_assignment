@@ -218,7 +218,7 @@ public class CourseManager {
                     }
                 }
                 //二.1:不出现同分溢出的情况,即在满足选入课程的最后一人他不会和后面的同分，即使他与前面的同分，但是与后面不同分，他也可以正好选进去
-                if (inputCredits.get(course.getMaxCapacity()) != course.getCredits().indexOf(course.getMaxCapacity()+1) ) {
+                if (inputCredits.get(course.getMaxCapacity() - 1) != inputCredits.get(course.getMaxCapacity())) {
                     for (int i = 0; i < course.getMaxCapacity(); i++) {
                         //此时应该在从大到小的积分表inputCredits中从大的开始遍历，找到对应积分对应的学生，
                         //在这个学生的成功选课列表中把这个课程加到成功选课列表中
@@ -233,32 +233,49 @@ public class CourseManager {
                             }
                         }
                     }
-                }
-                //二.2.出现同分溢出的情况，即满足选入课程的最后一人他会和后面的同分
-                if (inputCredits.get(course.getMaxCapacity()) == course.getCredits().indexOf(course.getMaxCapacity()+1)) {
-                    for (int i = 0; i < course.getMaxCapacity(); i++) {
-                        int maxSatisfy = 0;//这个用来标记不会出现同分溢出的那个人
-                        //此时应该在从大到小的积分表inputCredits中从大的开始遍历，找到对应积分对应的学生，
-                        //在这个学生的成功选课列表中把这个课程加到成功选课列表中
-                        for (int j = 0; j < course.getEnrollStudent().size(); j++) {
-//                            ArrayList<Boolean> check = new ArrayList<Boolean>(course.getEnrollStudent().size());
-//                            //判断满足课容对应的那个人的前面有与他同分的人，如果有，那里标记为true，不加入成功选课列表，
-//                            // 没有就标记为false，加入成功选课列表
-                            if (course.getCredits().get(j) == inputCredits.get(course.getMaxCapacity())) {
-                                //找到满足课容对应的那个人
-                                maxSatisfy = j - 1;//这个以为着第j个人之前的人都是可以录进去的，j之后的人都是不能录进去的
-                                break;
-                            }
-                        }
-                        for (int j = 0; j < maxSatisfy; j++) {
-                            //3.学生的成功选课课表更新
-                            course.getEnrollStudent().get(j).getSuccessCourses().add(course);
-                            //4.课程的成功选课学生更新
-                            course.getSuccessStudents().add(course.getEnrollStudent().get(j));
+                } else {
+                    //二.2.出现同分溢出的情况，即满足选入课程的最后一人他会和后面的同分
+                    int maxSatisfy = 0;
+                    for (int i = 0; i < inputCredits.get(course.getMaxCapacity()); i++) {
+                        if (inputCredits.get(i) == inputCredits.get(course.getMaxCapacity() - 1)) {
+                            maxSatisfy = i;
                             break;
                         }
                     }
+                    for (int i = 0; i < maxSatisfy; i++) {
+                        for (int j = 0; j < course.getCredits().size(); j++) {
+                            if (course.getCredits().get(j).equals(inputCredits.get(i))) {
+                                course.getSuccessStudents().add(course.getEnrollStudent().get(j));
+                                course.getEnrollStudent().get(j).getSuccessCourses().add(course);
+                            }
+                        }
+                    }
                 }
+//                //二.2.出现同分溢出的情况，即满足选入课程的最后一人他会和后面的同分
+//                if (inputCredits.get(course.getMaxCapacity()-1) == inputCredits.indexOf(course.getMaxCapacity())) {
+//                    for (int i = 0; i < inputCredits.get(course.getMaxCapacity()); i++) {
+//                        int maxSatisfy = 0;//这个用来标记不会出现同分溢出的那个人
+//                        //此时应该在从大到小的积分表inputCredits中从大的开始遍历，找到对应积分对应的学生，
+//                        //在这个学生的成功选课列表中把这个课程加到成功选课列表中
+//                        for (int j = 0; j < inputCredits.get(course.getMaxCapacity()); j++) {
+////                            ArrayList<Boolean> check = new ArrayList<Boolean>(course.getEnrollStudent().size());
+////                            //判断满足课容对应的那个人的前面有与他同分的人，如果有，那里标记为true，不加入成功选课列表，
+////                            // 没有就标记为false，加入成功选课列表
+//                            if (inputCredits.get(j) == inputCredits.get(course.getMaxCapacity()-1)) {
+//                                //找到满足课容对应的那个人
+//                                maxSatisfy = j - 1;//这个以为着第j个人之前的人都是可以录进去的，j之后的人都是不能录进去的
+//                                break;
+//                            }
+//                        }
+//                        for (int j = 0; j < maxSatisfy; j++) {
+//                            //3.学生的成功选课课表更新
+//                            course.getEnrollStudent().get(j).getSuccessCourses().add(course);
+//                            //4.课程的成功选课学生更新
+//                            course.getSuccessStudents().add(course.getEnrollStudent().get(j));
+//                            break;
+//                        }
+//                    }
+//                }
             }
         }
     }
@@ -273,8 +290,8 @@ public class CourseManager {
      * @return A list of Strings, each representing the courses and the respective
      * credits the student enrolled.
      */
-    //生成一个String类型的学生的选课列表，每个格式是"courseID: enrollmentCredits"
-    //只有在选课阶段才能生成，选课结束阶段返回null
+//生成一个String类型的学生的选课列表，每个格式是"courseID: enrollmentCredits"
+//只有在选课阶段才能生成，选课结束阶段返回null
     public ArrayList<String> getEnrolledCoursesWithCredits(Student student) {
         if (ifOpen == false) {
             return null;
