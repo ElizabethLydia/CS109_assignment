@@ -128,7 +128,9 @@ public class CourseManager {
             //2.更新学生的这个课程的投分情况，变为此时的所投积分
             //3.更新课程的积分情况，变为此时的所投积分
             //1.更新学生目前的剩余积分
-            student.setCredits(student.getCredits() + course.getCredits().get(student.getEnrollCourses().indexOf(course)) - credits);
+//            student.setCredits(student.getCredits() + course.getCredits().get(student.getEnrollCourses().indexOf(course)) - credits);
+            student.setCredits(student.getCredits() + course.getCredits().get(course.getEnrollStudent().indexOf(student)) - credits);
+            //注意第一种写法是错误的，因为学生课表list中这门课的索引不是这门课程选课学生的索引
             //2.更新学生的这个课程的投分情况，变为此时的所投积分
             student.enrollCourse(course.getCourseID(), credits);
             //3.更新课程的积分情况，变为此时的所投积分
@@ -164,8 +166,10 @@ public class CourseManager {
             //1.积分退回，学生积分更新
             //2.学生选课列表去除这门课
             //3.课程的学生列表里面去除这个学生，课程的积分列表中去除这个学生对应的积分
-            //1.积分退回，学生积分更新(course.getCredits().get(student.getEnrollCourses().indexOf(course))这个是学生选的这门课的积分)
-            student.setCredits(student.getCredits() + course.getCredits().get(student.getEnrollCourses().indexOf(course)));
+            //1.积分退回，学生积分更新
+            // (course.getCredits().get(student.getEnrollCourses().indexOf(course))和course.getEnrollStudent().indexOf(student)是不一样的
+            //学生中找到该课程的索引不一定是我要的这门课程投分学生的索引
+            student.setCredits(student.getCredits() + course.getCredits().get(course.getEnrollStudent().indexOf(student)));
             //2.学生选课列表去除这门课
             student.getEnrollCourses().remove(course);
             //3.课程的学生列表中去除这个学生，课程的积分列表中去除这个学生对应的积分
