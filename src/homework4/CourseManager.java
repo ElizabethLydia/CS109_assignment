@@ -242,15 +242,23 @@ public class CourseManager {
                             break;
                         }
                     }
-                    for (int i = 0; i < maxSatisfy; i++) {
-                        for (int j = 0; j < course.getCredits().size(); j++) {
-                            if (course.getCredits().get(j).equals(inputCredits.get(i))) {
-                                course.getSuccessStudents().add(course.getEnrollStudent().get(j));
-                                course.getEnrollStudent().get(j).getSuccessCourses().add(course);
-                            }
-                        }
+                    for (int j = 0; j < maxSatisfy; j++) {
+                        //3.学生的成功选课课表更新
+                        course.getEnrollStudent().get(j).getSuccessCourses().add(course);
+                        //4.课程的成功选课学生更新
+                        course.getSuccessStudents().add(course.getEnrollStudent().get(j));
+                        break;
                     }
                 }
+//                    for (int i = 0; i < maxSatisfy; i++) {
+//                        for (int j = 0; j < course.getCredits().size(); j++) {
+//                            if (course.getCredits().get(j).equals(inputCredits.get(i))) {
+//                                course.getSuccessStudents().add(course.getEnrollStudent().get(j));
+//                                course.getEnrollStudent().get(j).getSuccessCourses().add(course);
+//                            }
+//                        }
+//                    }
+//                }
 //                //二.2.出现同分溢出的情况，即满足选入课程的最后一人他会和后面的同分
 //                if (inputCredits.get(course.getMaxCapacity()-1) == inputCredits.indexOf(course.getMaxCapacity())) {
 //                    for (int i = 0; i < inputCredits.get(course.getMaxCapacity()); i++) {
