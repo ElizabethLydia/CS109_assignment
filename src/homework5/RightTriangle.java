@@ -51,7 +51,7 @@ public class RightTriangle extends Shape {
                         //**
                         //***
                         //通过判断斜率的方法判断是否在直角三角形内
-                        if (height - i <= slope * (width - j)) {
+                        if (height - i - 1 <= slope * (width - j - 1)) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -61,7 +61,7 @@ public class RightTriangle extends Shape {
                         //***
                         // **
                         //  *
-                        if (i  <= slope * j) {
+                        if ((i + 1) <= slope * (j + 1)) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -71,7 +71,8 @@ public class RightTriangle extends Shape {
                         //  *
                         // **
                         //***
-                        if (height - i <= slope * j) {
+                        //没有考虑斜率为0的情况
+                        if (height - (i + 1) <= slope * (j + 1)) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';

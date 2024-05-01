@@ -37,7 +37,7 @@ public class Circle extends Shape {
                     if (i <= radius - 1 && j <= radius - 1) {
                         int x = radius - 1;
                         int y = radius - 1;
-                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                        if ((i - x) * (i - x) + (j - y) * (j - y) < radius * radius) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -47,7 +47,7 @@ public class Circle extends Shape {
                     if (i <= radius - 1 && j >= radius) {
                         int x = radius - 1;
                         int y = radius;
-                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                        if ((i - x) * (i - x) + (j - y) * (j - y) < radius * radius) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -57,7 +57,7 @@ public class Circle extends Shape {
                     if (i >= radius && j <= radius - 1) {
                         int x = radius;
                         int y = radius - 1;
-                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                        if ((i - x) * (i - x) + (j - y) * (j - y) < radius * radius) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -67,7 +67,7 @@ public class Circle extends Shape {
                     if (i >= radius && j >= radius) {
                         int x = radius;
                         int y = radius;
-                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                        if ((i - x) * (i - x) + (j - y) * (j - y) < radius * radius) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
