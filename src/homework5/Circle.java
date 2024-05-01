@@ -13,60 +13,65 @@ public class Circle extends Shape {
     public Circle(Location location, char pattern, int radius) {
         super(location, pattern);
         this.radius = radius;
+        fillGrids();
     }
 
     //fillGrids()方法构造
     @Override
     public void fillGrids() {
         int diameter = radius * 2;
-        grids = new char[diameter + location.getX()][diameter + location.getY()];
-        for (int i = location.getX(); i < location.getX() + diameter; i++) {
-            for (int j = location.getY(); j < location.getY() + diameter; j++) {
+        grids = new char[diameter][diameter];
+        for (int i = 0; i < diameter; i++) {
+            for (int j = 0; j < diameter; j++) {
                 //首先把圆形的每个格子都填充为空格
                 grids[i][j] = ' ';
             }
         }
-        for (int i = location.getX(); i < location.getX() + diameter; i++) {
-            for (int j = location.getY(); j < location.getY() + diameter; j++) {
+        for (int i = 0; i < diameter; i++) {
+            for (int j = 0; j < diameter; j++) {
                 //将圆形分为四个板块，分别判断每个板块中的点是否在圆内
                 //左上角的板块
-                if (i <= location.getX() + radius - 1 && j <= location.getY() + radius - 1) {
-                    int x = location.getX() + radius - 1;
-                    int y = location.getY() + radius - 1;
-                    if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
-                        grids[i][j] = pattern;
-                    } else {
-                        grids[i][j] = ' ';
+                if (radius == 1) {
+                    grids[i][j] = pattern;
+                } else {
+                    if (i <= radius - 1 && j <= radius - 1) {
+                        int x = radius - 1;
+                        int y = radius - 1;
+                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                            grids[i][j] = pattern;
+                        } else {
+                            grids[i][j] = ' ';
+                        }
                     }
-                }
-                //右上角的板块
-                if (i <= location.getX() + radius - 1 && j >= location.getY() + radius) {
-                    int x = location.getX() + radius - 1;
-                    int y = location.getY() + radius;
-                    if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
-                        grids[i][j] = pattern;
-                    } else {
-                        grids[i][j] = ' ';
+                    //右上角的板块
+                    if (i <= radius - 1 && j >= radius) {
+                        int x = radius - 1;
+                        int y = radius;
+                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                            grids[i][j] = pattern;
+                        } else {
+                            grids[i][j] = ' ';
+                        }
                     }
-                }
-                //左下角的板块
-                if (i >= location.getX() + radius && j <= location.getY() + radius - 1) {
-                    int x = location.getX() + radius;
-                    int y = location.getY() + radius - 1;
-                    if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
-                        grids[i][j] = pattern;
-                    } else {
-                        grids[i][j] = ' ';
+                    //左下角的板块
+                    if (i >= radius && j <= radius - 1) {
+                        int x = radius;
+                        int y = radius - 1;
+                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                            grids[i][j] = pattern;
+                        } else {
+                            grids[i][j] = ' ';
+                        }
                     }
-                }
-                //右下角的板块
-                if (i >= location.getX() + radius && j >= location.getY() + radius) {
-                    int x = location.getX() + radius;
-                    int y = location.getY() + radius;
-                    if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
-                        grids[i][j] = pattern;
-                    } else {
-                        grids[i][j] = ' ';
+                    //右下角的板块
+                    if (i >= radius && j >= radius) {
+                        int x = radius;
+                        int y = radius;
+                        if ((i - x) * (i - x) + (j - y) * (j - y) <= radius * radius) {
+                            grids[i][j] = pattern;
+                        } else {
+                            grids[i][j] = ' ';
+                        }
                     }
                 }
             }
@@ -117,8 +122,8 @@ public class Circle extends Shape {
     public int area() {
         //In Circle, the area should be the count of patterns that being filled in grids.
         int count = 0;
-        for (int i = location.getX(); i < location.getX() + radius * 2; i++) {
-            for (int j = location.getY(); j < location.getY() + radius * 2; j++) {
+        for (int i = 0; i < radius * 2; i++) {
+            for (int j = 0; j < radius * 2; j++) {
                 if (grids[i][j] == pattern) {
                     count++;
                 }

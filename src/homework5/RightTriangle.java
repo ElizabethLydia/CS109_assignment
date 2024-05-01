@@ -18,14 +18,21 @@ public class RightTriangle extends Shape {
         this.width = width;
         this.height = height;
         this.d = d;
+        fillGrids();
     }
 
     //fillGrids()方法构造
     @Override
     public void fillGrids() {
-        grids = new char[height + location.getX()][width + location.getY()];
-        for (int i = location.getX(); i < location.getX() + height; i++) {
-            for (int j = location.getY(); j < location.getY() + width; j++) {
+        grids = new char[height][width];
+        //初始化网格
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                grids[i][j] = ' ';
+            }
+        }
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 double slope = (double) height / width;
                 switch (d) {
                     case LEFT_UP:
@@ -33,7 +40,7 @@ public class RightTriangle extends Shape {
                         //**
                         //*
                         //通过判断斜率的方法判断是否在直角三角形内
-                        if (i - location.getX() <= slope * (width - (j - location.getY()))) {
+                        if (i <= slope * (width - j)) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -44,7 +51,7 @@ public class RightTriangle extends Shape {
                         //**
                         //***
                         //通过判断斜率的方法判断是否在直角三角形内
-                        if (height - (i - location.getX()) <= slope * (width - (j - location.getY()))) {
+                        if (height - i <= slope * (width - j)) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -54,7 +61,7 @@ public class RightTriangle extends Shape {
                         //***
                         // **
                         //  *
-                        if (i - location.getX() <= slope * (j - location.getY())) {
+                        if (i  <= slope * j) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -64,7 +71,7 @@ public class RightTriangle extends Shape {
                         //  *
                         // **
                         //***
-                        if (height - (i - location.getX()) <= slope * (j - location.getY())) {
+                        if (height - i <= slope * j) {
                             grids[i][j] = pattern;
                         } else {
                             grids[i][j] = ' ';
@@ -92,13 +99,14 @@ public class RightTriangle extends Shape {
     @Override
     public int area() {
         int count = 0;
-        for (int i = location.getX(); i < location.getX() + height; i++) {
-            for (int j = location.getY(); j < location.getY() + width; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 if (grids[i][j] == pattern) {
                     count++;
                 }
             }
-        }return count;
+        }
+        return count;
     }
 
     @Override
