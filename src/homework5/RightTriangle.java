@@ -21,7 +21,6 @@ public class RightTriangle extends Shape {
         fillGrids();
     }
 
-    //fillGrids()方法构造
     @Override
     public void fillGrids() {
         grids = new char[height][width];
@@ -40,10 +39,29 @@ public class RightTriangle extends Shape {
                         //**
                         //*
                         //通过判断斜率的方法判断是否在直角三角形内
-                        if (i <= slope * (width - j)) {
+                        if ((i + 0.5) < (slope * (width - j - 0.5))) {
                             grids[i][j] = pattern;
                         } else {
-                            grids[i][j] = ' ';
+                            double[] x = new double[3];
+                            double[] y = new double[3];
+                            double[] multi = new double[2];
+                            x[0] = x[1] = i - 0.5;
+                            x[2] = i + 0.5;
+                            y[0] = y[2] = j - 0.5;
+                            y[1] = j + 0.5;
+                            multi[0] = ((x[0] + 0.5) - slope * (width - y[0] - 0.5)) * ((x[2] + 0.5) - slope * (width - y[2] - 0.5));
+                            multi[1] = ((x[0] + 0.5) - slope * (width - y[0] - 0.5)) * ((x[1] + 0.5) - slope * (width - y[1] - 0.5));
+                            int count = 0;
+                            for (int k = 0; k < 2; k++) {
+                                if (multi[k] < 0) {
+                                    count++;
+                                }
+                            }
+                            if (count > 0) {
+                                grids[i][j] = pattern;
+                            } else {
+                                grids[i][j] = ' ';
+                            }
                         }
                         break;
                     case LEFT_DOWN:
@@ -51,37 +69,157 @@ public class RightTriangle extends Shape {
                         //**
                         //***
                         //通过判断斜率的方法判断是否在直角三角形内
-                        if (height - i - 1 <= slope * (width - j - 1)) {
+                        if (height - i - 0.5 <= slope * (width - j - 0.5)) {
                             grids[i][j] = pattern;
                         } else {
-                            grids[i][j] = ' ';
+                            double[] x = new double[3];
+                            double[] y = new double[3];
+                            double[] multi = new double[2];
+                            x[0] = i - 0.5;
+                            x[1] = x[2] = i + 0.5;
+                            y[0] = y[1] = j - 0.5;
+                            y[2] = j + 0.5;
+                            multi[0] = ((height - x[0] - 0.5) - slope * (width - y[0] - 0.5)) * ((height - x[1] - 0.5) - slope * (width - y[1] - 0.5));
+                            multi[1] = ((height - x[2] - 0.5) - slope * (width - y[2] - 0.5)) * ((height - x[1] - 0.5) - slope * (width - y[1] - 0.5));
+                            int count = 0;
+                            for (int k = 0; k < 2; k++) {
+                                if (multi[k] < 0) {
+                                    count++;
+                                }
+                            }
+                            if (count > 0) {
+                                grids[i][j] = pattern;
+                            } else {
+                                grids[i][j] = ' ';
+                            }
                         }
                         break;
                     case RIGHT_UP:
                         //***
                         // **
                         //  *
-                        if ((i + 1) <= slope * (j + 1)) {
+                        if ((i + 0.5) <= slope * (j + 0.5)) {
                             grids[i][j] = pattern;
                         } else {
-                            grids[i][j] = ' ';
+                            double[] x = new double[3];
+                            double[] y = new double[3];
+                            double[] multi = new double[2];
+                            x[0] = x[1] = i - 0.5;
+                            x[2] = i + 0.5;
+                            y[0] = j - 0.5;
+                            y[1] = y[2] = j + 0.5;
+                            multi[0] = ((x[0] + 0.5) - slope * (y[0] + 0.5)) * ((x[1] + 0.5) - slope * (y[1] + 0.5));
+                            multi[1] = ((x[1] + 0.5) - slope * (y[1] + 0.5)) * ((x[2] + 0.5) - slope * (y[2] + 0.5));
+                            int count = 0;
+                            for (int k = 0; k < 2; k++) {
+                                if (multi[k] < 0) {
+                                    count++;
+                                }
+                            }
+                            if (count > 0) {
+                                grids[i][j] = pattern;
+                            } else {
+                                grids[i][j] = ' ';
+                            }
                         }
                         break;
                     case RIGHT_DOWN:
                         //  *
                         // **
                         //***
-                        //没有考虑斜率为0的情况
-                        if (height - (i + 1) <= slope * (j + 1)) {
+                        if ((height - i - 0.5) <= slope * (j + 0.5)) {
                             grids[i][j] = pattern;
                         } else {
-                            grids[i][j] = ' ';
+                            double[] x = new double[3];
+                            double[] y = new double[3];
+                            double[] multi = new double[2];
+                            x[0] = i - 0.5;
+                            x[1] = x[2] = i + 0.5;
+                            y[1] = j - 0.5;
+                            y[0] = y[2] = j + 0.5;
+                            multi[0] = ((height - x[0] - 0.5) - slope * (y[0] + 0.5)) * ((height - x[2] - 0.5) - slope * (y[2] + 0.5));
+                            multi[1] = ((height - x[1] - 0.5) - slope * (y[1] + 0.5)) * ((height - x[2] - 0.5) - slope * (y[2] + 0.5));
+                            int count = 0;
+                            for (int k = 0; k < 2; k++) {
+                                if (multi[k] < 0) {
+                                    count++;
+                                }
+                            }
+                            if (count > 0) {
+                                grids[i][j] = pattern;
+                            } else {
+                                grids[i][j] = ' ';
+                            }
                         }
                         break;
                 }
             }
         }
     }
+    //fillGrids()方法构造
+//    @Override
+//    public void fillGrids() {
+//        grids = new char[height][width];
+//        //初始化网格
+//        for (int i = 0; i < height; i++) {
+//            for (int j = 0; j < width; j++) {
+//                grids[i][j] = ' ';
+//            }
+//        }
+//        for (int i = 0; i < height; i++) {
+//            for (int j = 0; j < width; j++) {
+//                double slope = (double) height / width;
+//                switch (d) {
+//                    case LEFT_UP:
+//                        //***
+//                        //**
+//                        //*
+//                        //通过判断斜率的方法判断是否在直角三角形内
+//                        if (i <= slope * (width - j)) {
+//                            grids[i][j] = pattern;
+//                        } else {
+//                            grids[i][j] = ' ';
+//                        }
+//                        break;
+//                    case LEFT_DOWN:
+//                        //*
+//                        //**
+//                        //***
+//                        //通过判断斜率的方法判断是否在直角三角形内
+//                        if (height - i - 1 <= slope * (width - j - 1)) {
+//                            grids[i][j] = pattern;
+//                        } else {
+//                            grids[i][j] = ' ';
+//                        }
+//                        break;
+//                    case RIGHT_UP:
+//                        //***
+//                        // **
+//                        //  *
+//                        if ((i + 1) <= slope * (j + 1)) {
+//                            grids[i][j] = pattern;
+//                        } else {
+//                            grids[i][j] = ' ';
+//                        }
+//                        break;
+//                    case RIGHT_DOWN:
+//                        //  *
+//                        // **
+//                        //***
+//                        if (i == height - 1) {
+//                            grids[i][j] = pattern;
+//                        } else {
+//                            if (height - (i + 1) <= slope * (j + 1)) {
+//                                grids[i][j] = pattern;
+//                            } else {
+//                                grids[i][j] = ' ';
+//                            }
+//                        }
+//                        break;
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void enlarge() {
