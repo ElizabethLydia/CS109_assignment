@@ -1,6 +1,11 @@
 package homework5;
 
 public class RightTriangle extends Shape {
+    @Override
+    public char getPattern() {
+        return pattern;
+    }
+
     //fields: width, height, d
     private int width;//[1-20]
     //The width of RightTriangle, and it is also the width of grids.

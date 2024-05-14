@@ -30,5 +30,8 @@ public abstract class Shape {
     //determined by the concrete subclass of shape.
 
     public abstract int area();
-    //Return the count of patterns that being filled in grids.
+
+    public abstract char getPattern();
+
 }
+//Return the count of patterns that being filled in grids.

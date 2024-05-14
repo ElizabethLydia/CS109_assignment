@@ -132,6 +132,13 @@ public class Circle extends Shape {
         return count;
     }
 
+    @Override
+    public char getPattern() {
+        return pattern;
+    }
+
+
+
     //toString()方法构造
     @Override
     public String toString() {
